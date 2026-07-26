@@ -1,19 +1,35 @@
 import Img1 from './assets/img/th.jpg'
-import Event from './Event'
+import { Button } from './Button'
+import { Card } from './Card.tsx'
+
 function App() {
-  const name ='Mina'
-  const color ={
-    color : 'green',
-    fontSize : '50px'
+  const name = 'Mina'
+  const color = {
+    color: 'green',
+    fontSize: '50px'
   }
   return (
     <>
-    <img src={Img1} alt="Image" style={{borderRadius:"20px",width:"200px"}} />
+      <div className="container mb-4">
+        <div className="row g-3">
+          <div className="col-lg-4 col-sm-3">
+            <Card text="iPhone 17 Pro Max" description="One of the latest model of apple moblile phone" classr="btn btn-danger"/>
+          </div>
+          <div className="col-lg-4 col-sm-3">
+            <Card text="Mac Book Pro" description="One of the latest model of apple macbook" classr="btn btn-success" />
+          </div>
+          <div className="col-lg-4 col-sm-3">
+            <Card text="Mac Book Pro" description="One of the latest model of apple macbook" classr="btn btn-warning" />
+          </div>
+        </div>
+      </div>
+
+      <img src={Img1} alt="Image" style={{ borderRadius: "20px", width: "200px" }} />
       <h1>Hello <span style={color}>{name}</span>  from React!</h1>
       <p>Para 1</p>
-      <div>
-        < Event/>
-      </div>
+      <Button text="Login" type="button" />
+      <Button text="Register" type="submit" />
+      <button className='btn btn-success'>Bootstrap Button</button>
     </>
   )
 
