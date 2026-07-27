@@ -13,13 +13,25 @@ function App() {
       <div className="container mb-4">
         <div className="row g-3">
           <div className="col-lg-4 col-sm-3">
-            <Card text="iPhone 17 Pro Max" description="One of the latest model of apple moblile phone" classr="btn btn-danger"/>
+            <Card text="iPhone 17 Pro Max" btnColor="danger">
+              <p>
+                One of the latest model of apple moblile phone
+              </p>
+            </Card>
           </div>
           <div className="col-lg-4 col-sm-3">
-            <Card text="Mac Book Pro" description="One of the latest model of apple macbook" classr="btn btn-success" />
+            <Card text="Mac Book Pro"btnColor="success">
+              <ul>
+                <li>List 1</li>
+                <li>List 2</li>
+                <li>List 3</li>
+              </ul>
+            </Card>
           </div>
           <div className="col-lg-4 col-sm-3">
-            <Card text="Mac Book Pro" description="One of the latest model of apple macbook" classr="btn btn-warning" />
+            <Card text="AirBuds">
+              <p>One of the latest model of Ear Phone.</p>
+            </Card>
           </div>
         </div>
       </div>

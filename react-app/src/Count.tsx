@@ -14,8 +14,8 @@ function Count() {
         <div style={{ textAlign: "center" }}>
             <h1 >Count: {num}</h1>
             {/* <button onClick={handleIncrement}>+</button> */}
-            <button className='button' onClick={()=> setNum(num + 1)}>+</button>
-            <button className='button' onClick={()=> setNum(num - 1)}>-</button>
+            <button className='button' onClick={() => setNum(num - 1)}>-</button>
+            <button className='button' onClick={() => setNum(num + 1)}>+</button>
         </div>
 
     )
