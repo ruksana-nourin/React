@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { User } from "./User.types"
+import type { User } from "./User.types.tsx"
 import defaultUser from "./User.types.tsx";
 
 function User(){

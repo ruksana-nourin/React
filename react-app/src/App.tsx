@@ -1,47 +1,37 @@
-import Img1 from './assets/img/th.jpg'
-import { Button } from './Button'
-import { Card } from './Card.tsx'
-
+import { Link, Outlet } from 'react-router'
+import { Home } from './Home'
+import User from './User'
 function App() {
-  const name = 'Mina'
-  const color = {
-    color: 'green',
-    fontSize: '50px'
-  }
+
   return (
     <>
-      <div className="container mb-4">
-        <div className="row g-3">
-          <div className="col-lg-4 col-sm-3">
-            <Card text="iPhone 17 Pro Max" btnColor="danger">
-              <p>
-                One of the latest model of apple moblile phone
-              </p>
-            </Card>
-          </div>
-          <div className="col-lg-4 col-sm-3">
-            <Card text="Mac Book Pro"btnColor="success">
-              <ul>
-                <li>List 1</li>
-                <li>List 2</li>
-                <li>List 3</li>
-              </ul>
-            </Card>
-          </div>
-          <div className="col-lg-4 col-sm-3">
-            <Card text="AirBuds">
-              <p>One of the latest model of Ear Phone.</p>
-            </Card>
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">Navbar</Link>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/user">Users</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/test">Test</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
+
+            </ul>
           </div>
         </div>
-      </div>
+      </nav>
 
-      <img src={Img1} alt="Image" style={{ borderRadius: "20px", width: "200px" }} />
-      <h1>Hello <span style={color}>{name}</span>  from React!</h1>
-      <p>Para 1</p>
-      <Button text="Login" type="button" />
-      <Button text="Register" type="submit" />
-      <button className='btn btn-success'>Bootstrap Button</button>
+      <Outlet/>
     </>
   )
 
