@@ -44,8 +44,8 @@ function Navbar() {
 
                         <div className="dropdown">
                             <button className="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img className="avatar-img avatar-sm" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan" />
-                                <span className="profile-name d-none d-sm-inline">Admin Hasan</span>
+                                <img className="avatar-img avatar-sm" src="https://i.pravatar.cc/50?img=20" alt="R. Nourin" />
+                                <span className="profile-name d-none d-sm-inline">R. Nourin</span>
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li><a className="dropdown-item" href="profile.html">Profile</a></li>

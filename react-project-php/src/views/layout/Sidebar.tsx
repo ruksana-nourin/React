@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link, NavLink } from "react-router"
 
 function Sidebar() {
     return (
@@ -17,15 +17,15 @@ function Sidebar() {
                 </div>
 
                 <nav className="sidebar-nav">
-                    <Link className="nav-link active" to="/" aria-current="page">
+                    <NavLink className="nav-link " to="/" aria-current="page">
                         <span className="nav-icon"><i className="bi bi-speedometer2" aria-hidden="true"></i></span>
                         <span className="nav-text">Dashboard</span>
-                    </Link>
-                    <Link className="nav-link" to="/user">
+                    </NavLink>
+                    <NavLink className="nav-link" to="/user">
                         <span className="nav-icon"><i className="bi bi-people" aria-hidden="true"></i></span>
                         <span className="nav-text">Users</span>
-                    </Link>
-                    <Link className="nav-link" to="add-user.html">
+                    </NavLink>
+                    <Link className="nav-link" to="/add-user">
                         <span className="nav-icon"><i className="bi bi-person-plus" aria-hidden="true"></i></span>
                         <span className="nav-text">Add User</span>
                     </Link>
@@ -68,8 +68,8 @@ function Sidebar() {
                 </nav>
 
                 <div className="sidebar-user">
-                    <img className="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan" />
-                    <strong>Admin Hasan</strong>
+                    <img className="avatar-img avatar-md sidebar-user-avatar" src="https://i.pravatar.cc/50?img=20" alt="R. Nourin" />
+                    <strong>R. Nourin</strong>
                     <small>Active Workspace</small>
                 </div>
 
