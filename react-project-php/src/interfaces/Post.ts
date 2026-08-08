@@ -1,12 +1,11 @@
 export interface Post {
-  id?: number;
-  userId: string;
-  title: string;
-  body: string;
+    id?: number;
+    userId: number;
+    title: string;
+    body: string;
 }
-
-export const defaultPost: Post ={
-    userId: "",
+export const defaultPost: Post = {
+    userId: 1,
     title: "",
     body: "",
 };

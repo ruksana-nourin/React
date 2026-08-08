@@ -1,0 +1,29 @@
+import PageHeading from "../../../components/PageHeading";
+import { Link } from "react-router";
+
+
+function AuthorList() {
+    return (
+        <>
+            <main className="dashboard-content">
+                <div className="container-fluid px-3 px-lg-4 py-4">
+                    <PageHeading
+                        icon="tags"
+                        subtitle="Library"
+                        title="Categories"
+                        desc="Manage library categories"
+                    >
+                        <Link className="btn btn-primary" to="/add-category">
+                            <i className="bi bi-plus-lg me-2"></i>
+                            Add Category
+                        </Link>
+                    </PageHeading>
+                </div>
+            </main>
+        </>
+        
+
+    );
+}
+
+export default AuthorList;

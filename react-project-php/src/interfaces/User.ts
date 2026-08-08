@@ -1,13 +1,12 @@
 export interface User {
-  id?: number;
-  name: string;
-  email: string;
-  role_id: number;
-  password?: string;
+    id?: number;
+    name: string;
+    email: string;
+    role_id: number;
+    password?: string;
 }
-
-export const defaultUser: User ={
-    name: "R. Nourin",
+export const defaultUser: User = {
+    name: "",
     email: "",
     role_id: 0,
 };
