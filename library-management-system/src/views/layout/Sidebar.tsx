@@ -77,41 +77,13 @@ function Sidebar() {
                         )}
 
                     </div>
-                    <NavLink className="nav-link" to="profile.html">
-                        <span className="nav-icon"><i className="bi bi-person-badge" aria-hidden="true"></i></span>
-                        <span className="nav-text">Profile</span>
-                    </NavLink>
-                    <NavLink className="nav-link" to="charts.html">
-                        <span className="nav-icon"><i className="bi bi-bar-chart-line" aria-hidden="true"></i></span>
-                        <span className="nav-text">Charts</span>
-                    </NavLink>
-                    <NavLink className="nav-link" to="tables.html">
-                        <span className="nav-icon"><i className="bi bi-table" aria-hidden="true"></i></span>
-                        <span className="nav-text">Tables</span>
-                    </NavLink>
-                    <NavLink className="nav-link" to="forms.html">
-                        <span className="nav-icon"><i className="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
-                        <span className="nav-text">Forms</span>
-                    </NavLink>
-                    <NavLink className="nav-link" to="components.html">
-                        <span className="nav-icon"><i className="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-                        <span className="nav-text">Components</span>
-                    </NavLink>
-                    <NavLink className="nav-link" to="alerts.html">
-                        <span className="nav-icon"><i className="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
-                        <span className="nav-text">Alerts</span>
-                    </NavLink>
-                    <NavLink className="nav-link" to="modals.html">
-                        <span className="nav-icon"><i className="bi bi-window-stack" aria-hidden="true"></i></span>
-                        <span className="nav-text">Modals</span>
-                    </NavLink>
                     <NavLink className="nav-link" to="settings.html">
                         <span className="nav-icon"><i className="bi bi-gear" aria-hidden="true"></i></span>
                         <span className="nav-text">Settings</span>
                     </NavLink>
-                    <NavLink className="nav-link" to="blank.html">
-                        <span className="nav-icon"><i className="bi bi-file-earmark" aria-hidden="true"></i></span>
-                        <span className="nav-text">Blank Page</span>
+                    <NavLink className="nav-link" to="/user">
+                        <span className="nav-icon"><i className="bi bi-person" aria-hidden="true"></i></span>
+                        <span className="nav-text">User</span>
                     </NavLink>
                 </nav>
 

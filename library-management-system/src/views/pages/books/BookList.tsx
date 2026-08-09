@@ -1,12 +1,16 @@
 import type { Book } from "../../../interfaces/Book";
 import PageHeading from "../../../components/PageHeading";
 import { Link } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function BookList() {
     const [searchTerm, setSearchTerm] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("All");
     const [statusFilter, setStatusFilter] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, categoryFilter, statusFilter]);
 
 
     const books: Book[] = [
@@ -80,7 +84,7 @@ function BookList() {
 
 
                         <Link className="btn btnsm btn-primary" to="/add-book">
-                            <i className="bi bi-arrow-right" aria-hidden="true"></i> Add Book
+                            <i className="bi bi-plus-lg me-2"></i> Add Book
                         </Link>
 
                     </PageHeading>
@@ -240,19 +244,21 @@ function BookList() {
                                                     {/* Action */}
                                                     <td className="text-end">
 
-                                                        <button
+                                                        <Link
+                                                            to={`/book/${book.id}`}
                                                             className="btn btn-sm btn-outline-primary me-2"
                                                             title="View"
                                                         >
                                                             <i className="bi bi-eye"></i>
-                                                        </button>
+                                                        </Link>
 
-                                                        <button
+                                                        <Link
+                                                            to={`/book/${book.id}/edit`}
                                                             className="btn btn-sm btn-outline-success me-2"
                                                             title="Edit"
                                                         >
                                                             <i className="bi bi-pencil"></i>
-                                                        </button>
+                                                        </Link>
 
                                                         <button
                                                             className="btn btn-sm btn-outline-danger"
@@ -275,6 +281,86 @@ function BookList() {
                                     </tbody>
 
                                 </table>
+
+
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+
+                                    {/* Showing information */}
+                                    <div className="text-muted small">
+                                        Showing{" "}
+                                        {filteredBooks.length > 0 ? startIndex + 1 : 0}
+                                        {" - "}
+                                        {Math.min(
+                                            startIndex + booksPerPage,
+                                            filteredBooks.length
+                                        )}
+                                        {" of "}
+                                        {filteredBooks.length} books
+                                    </div>
+
+                                    {/* Pagination */}
+                                    <nav aria-label="Book pagination">
+
+                                        <ul className="pagination mb-0">
+
+                                            {/* Previous */}
+                                            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                                <button
+                                                    type="button"
+                                                    className="page-link"
+                                                    onClick={() =>
+                                                        setCurrentPage((page) => page - 1)
+                                                    }
+                                                    disabled={currentPage === 1}
+                                                >
+                                                    Previous
+                                                </button>
+                                            </li>
+
+                                            {/* Page Numbers */}
+                                            {Array.from(
+                                                { length: totalPages },
+                                                (_, index) => index + 1
+                                            ).map((page) => (
+
+                                                <li
+                                                    key={page}
+                                                    className={`page-item ${currentPage === page ? "active" : ""
+                                                        }`}
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage(page)}
+                                                    >
+                                                        {page}
+                                                    </button>
+                                                </li>
+
+                                            ))}
+
+                                            {/* Next */}
+                                            <li
+                                                className={`page-item ${currentPage === totalPages ? "disabled" : ""
+                                                    }`}
+                                            >
+                                                <button
+                                                    type="button"
+                                                    className="page-link"
+                                                    onClick={() =>
+                                                        setCurrentPage((page) => page + 1)
+                                                    }
+                                                    disabled={currentPage === totalPages}
+                                                >
+                                                    Next
+                                                </button>
+                                            </li>
+
+                                        </ul>
+
+                                    </nav>
+
+                                </div>
 
                             </div>
 

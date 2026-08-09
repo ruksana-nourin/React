@@ -84,7 +84,7 @@ function UserManage() {
                             </div>
                             <div className="d-flex flex-wrap gap-2">
                                 <input className="form-control form-control-sm table-search" type="search" placeholder="Search users" data-table-search="usersTable" aria-label="Search users" />
-                                <a className="btn btn-primary btn-sm" href="add-user.html"><i className="bi bi-person-plus" aria-hidden="true"></i> Add User</a>
+                                <a className="btn btn-primary btn-sm" href="/add-user"><i className="bi bi-person-plus" aria-hidden="true"></i> Add User</a>
                             </div>
                         </div>
                         <div className="table-responsive">

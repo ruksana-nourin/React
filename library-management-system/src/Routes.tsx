@@ -11,6 +11,9 @@ import BookList from "./views/pages/books/BookList";
 import AuthorList from "./views/pages/authors/AuthorList";
 import CategoryList from "./views/pages/categories/CategoryList";
 import PublisherList from "./views/pages/publishers/PublisherList";
+import AddBook from "./views/pages/books/AddBook";
+import ViewBook from "./views/pages/books/ViewBook";
+import EditBook from "./views/pages/books/EditBook";
 
 
 const routes = createBrowserRouter([
@@ -43,6 +46,18 @@ const routes = createBrowserRouter([
                 element: <BookList />
             },
             {
+                path: "/add-book",
+                element: <AddBook />
+            },
+            {
+                path: "book/:id",
+                element: <ViewBook />
+            },
+            {
+                path: "/book/:id/edit",
+                element: <EditBook />
+            },
+            {
                 path: "/authors",
                 element: <AuthorList />
             },
@@ -58,7 +73,7 @@ const routes = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <Login/>
+        element: <Login />
     },
     {
         path: "*",
