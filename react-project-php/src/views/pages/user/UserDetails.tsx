@@ -1,8 +1,26 @@
 import { Link, useParams } from "react-router";
 import PageHeading from "../../../components/PageHeading.tsx";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { defaultUser, type User } from "../../../interfaces/User.ts";
 
 function UserDetails() {
     const {id} = useParams();
+    const [user, setUser] = useState<User>(defaultUser);
+    const getUser =()=>{
+      axios
+      .get("http://localhost/react-project-api/api/user-details?id="+id)
+      .then((res)=>{
+        // console.log(res.data);
+        setUser(res.data)
+      })
+      .catch((err)=>{
+        console.log(err);
+      });
+    }
+    useEffect(()=>{
+      getUser();
+    },[]);
   return (
     <>
       <main className="dashboard-content">
@@ -31,27 +49,15 @@ function UserDetails() {
                     src="https://i.pravatar.cc/100"
                     alt="Asia R."
                   />
-                  <h2 className="h5 mb-1">Asia R.</h2>
-                  <p className="text-muted mb-3">Senior Administrator</p>
-                  <span className="badge text-bg-success">Active Account</span>
+                  <h2 className="h5 mb-1">{user.name}</h2>
+                  <p className="text-muted mb-3">{user.role}</p>
                 </div>
                 <div className="info-list mt-4 text-start">
                   <div>
                     <span>Email</span>
-                    <strong>sarah@example.com</strong>
+                    <strong>{user.email}</strong>
                   </div>
-                  <div>
-                    <span>Phone</span>
-                    <strong>+1 555 0184</strong>
-                  </div>
-                  <div>
-                    <span>Team</span>
-                    <strong>Operations</strong>
-                  </div>
-                  <div>
-                    <span>Location</span>
-                    <strong>New York, USA</strong>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -78,61 +84,24 @@ function UserDetails() {
                   <div className="col-md-4">
                     <div className="mini-card">
                       <span>Role</span>
-                      <strong>Admin</strong>
+                      <strong>{user.role}</strong>
                     </div>
                   </div>
                   <div className="col-md-4">
                     <div className="mini-card">
-                      <span>Last Login</span>
-                      <strong>Today</strong>
+                      <span>Role Id</span>
+                      <strong>{user.role_id}</strong>
                     </div>
                   </div>
                   <div className="col-md-4">
                     <div className="mini-card">
-                      <span>Projects</span>
-                      <strong>14 Active</strong>
+                      <span>E-mail</span>
+                      <strong>{user.email}</strong>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="panel">
-                <div className="panel-header">
-                  <div>
-                    <h2 className="h5 mb-1 section-title">
-                      <i className="bi bi-clock-history" aria-hidden="true"></i>
-                      <span>Recent Activity</span>
-                    </h2>
-                    <p className="text-muted mb-0">
-                      Latest security and workflow events.
-                    </p>
-                  </div>
-                </div>
-                <div className="activity-list">
-                  <div className="activity-item">
-                    <span className="activity-dot bg-primary"></span>
-                    <div>
-                      <p className="mb-1 fw-semibold">
-                        Updated billing permissions
-                      </p>
-                      <p className="text-muted small mb-0">2 hours ago</p>
-                    </div>
-                  </div>
-                  <div className="activity-item">
-                    <span className="activity-dot bg-success"></span>
-                    <div>
-                      <p className="mb-1 fw-semibold">Approved new teammate</p>
-                      <p className="text-muted small mb-0">Yesterday</p>
-                    </div>
-                  </div>
-                  <div className="activity-item">
-                    <span className="activity-dot bg-warning"></span>
-                    <div>
-                      <p className="mb-1 fw-semibold">Changed password</p>
-                      <p className="text-muted small mb-0">Apr 30, 2026</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
             </div>
           </section>
         </div>

@@ -7,6 +7,8 @@ function BookList() {
     const [categoryFilter, setCategoryFilter] = useState("All");
     const [statusFilter, setStatusFilter] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
+    const [deleteBook, setDeleteBook] = useState<Book | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     useEffect(() => {
         setCurrentPage(1);
@@ -58,6 +60,11 @@ function BookList() {
 
         return matchesSearch && matchesCategory && matchesStatus;
     });
+    const handleResetFilters = () => {
+        setSearchTerm("");
+        setCategoryFilter("All");
+        setStatusFilter("All");
+    }
     const booksPerPage = 5;
 
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
@@ -68,6 +75,19 @@ function BookList() {
         startIndex,
         startIndex + booksPerPage
     );
+
+    const handleDeleteClick = (book: Book) => {
+        setDeleteBook(book);
+        setShowDeleteModal(true);
+    };
+    const handleDeleteConfirm = () => {
+        if (!deleteBook) return;
+
+        console.log("Delete book:", deleteBook);
+
+        setShowDeleteModal(false);
+        setDeleteBook(null);
+    };
     return (
         <>
 
@@ -96,7 +116,7 @@ function BookList() {
                             <div className="row g-3">
 
                                 {/* Search */}
-                                <div className="col-lg-6">
+                                <div className="col-lg">
 
                                     <label className="form-label">
                                         Search Books
@@ -113,7 +133,7 @@ function BookList() {
                                 </div>
 
                                 {/* Category */}
-                                <div className="col-lg-3">
+                                <div className="col-lg-3 category">
 
                                     <select className="form-select"
                                         value={categoryFilter}
@@ -129,7 +149,7 @@ function BookList() {
                                 </div>
 
                                 {/* Status */}
-                                <div className="col-lg-3">
+                                <div className="col-lg-3 status">
 
                                     <select className="form-select"
                                         value={statusFilter}
@@ -144,6 +164,16 @@ function BookList() {
 
 
                                 </div>
+
+                                {/* Reset Button */}
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary col-lg-auto filter-reset-btn text-white"
+                                    onClick={handleResetFilters}
+                                >
+                                    <i className="bi bi-arrow-counterclockwise me-1"></i>
+                                    Reset
+                                </button>
 
                             </div>
 
@@ -261,8 +291,10 @@ function BookList() {
                                                         </Link>
 
                                                         <button
+                                                            type="button"
                                                             className="btn btn-sm btn-outline-danger"
                                                             title="Delete"
+                                                            onClick={() => handleDeleteClick(book)}
                                                         >
                                                             <i className="bi bi-trash"></i>
                                                         </button>
@@ -370,6 +402,78 @@ function BookList() {
 
                 </div>
             </main>
+            {showDeleteModal && deleteBook && (
+                <div
+                    className="modal fade show d-block"
+                    tabIndex={-1}
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+
+                            <div className="modal-header">
+                                <h5 className="modal-title">
+                                    Delete Book
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => {
+                                        setShowDeleteModal(false);
+                                        setDeleteBook(null);
+                                    }}
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+
+                            <div className="modal-body">
+
+                                <p className="mb-2">
+                                    Are you sure you want to delete this book?
+                                </p>
+
+                                <div className="alert alert-warning mb-0">
+                                    <strong>{deleteBook.title}</strong>
+                                    <br />
+                                    ISBN: {deleteBook.isbn}
+                                </div>
+
+                            </div>
+
+                            <div className="modal-footer">
+
+                                <button
+                                    type="button"
+                                    className="btn btn-light"
+                                    onClick={() => {
+                                        setShowDeleteModal(false);
+                                        setDeleteBook(null);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={handleDeleteConfirm}
+                                >
+                                    <i className="bi bi-trash me-1"></i>
+                                    Delete Book
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showDeleteModal && (
+                <div className="modal-backdrop fade show"></div>
+            )}
         </>
     );
 }

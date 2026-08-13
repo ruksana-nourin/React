@@ -2,12 +2,20 @@ import { Link, NavLink } from "react-router";
 import { useState } from "react";
 
 function Sidebar() {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [libraryOpen, setLibraryOpen] = useState(false);
+    const [membersOpen, setMembersOpen] = useState(false);
+    const [circulationOpen, setCirculationOpen] = useState(false);
+
+    const handleNavClick = () => {
+        setSidebarOpen(false);
+    };
     return (
         <>
-            <input type="checkbox" className="d-none" id="sidebarToggle" />
+            <input type="checkbox" className="d-none" id="sidebarToggle" checked={sidebarOpen}
+                onChange={(e) => setSidebarOpen(e.target.checked)} />
 
-            <aside className="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+            <aside className="admin-sidebar" id="adminSidebar" aria-label="Main navigation ">
                 <div className="sidebar-header">
                     <Link className="brand-mark" to="/" aria-label="adminHMD dashboard">
                         <span className="brand-icon"><i className="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
@@ -23,6 +31,8 @@ function Sidebar() {
                         <span className="nav-icon"><i className="bi bi-speedometer2" aria-hidden="true"></i></span>
                         <span className="nav-text">Dashboard</span>
                     </NavLink>
+
+                    {/* library */}
                     <div className="nav-group">
 
                         <button
@@ -52,22 +62,22 @@ function Sidebar() {
 
                             <div className="submenu">
 
-                                <NavLink className="nav-link sub-link" to="/books">
+                                <NavLink className="nav-link sub-link" to="/books" onClick={handleNavClick}>
                                     <i className="bi bi-book-fill"></i>
                                     Books
                                 </NavLink>
 
-                                <NavLink className="nav-link sub-link" to="/authors">
+                                <NavLink className="nav-link sub-link" to="/authors" onClick={handleNavClick}>
                                     <i className="bi bi-people-fill"></i>
                                     Authors
                                 </NavLink>
 
-                                <NavLink className="nav-link sub-link" to="/categories">
+                                <NavLink className="nav-link sub-link" to="/categories" onClick={handleNavClick}>
                                     <i className="bi bi-tags-fill"></i>
                                     Categories
                                 </NavLink>
 
-                                <NavLink className="nav-link sub-link" to="/publishers">
+                                <NavLink className="nav-link sub-link" to="/publishers" onClick={handleNavClick}>
                                     <i className="bi bi-person-lines-fill"></i>
                                     Publishers
                                 </NavLink>
@@ -77,7 +87,144 @@ function Sidebar() {
                         )}
 
                     </div>
-                    <NavLink className="nav-link" to="settings.html">
+
+                    {/* members */}
+                    <div>
+                        <button
+                            type="button"
+                            className="nav-link nav-dropdown"
+                            onClick={() => setMembersOpen(!membersOpen)}
+                        >
+                            <span className="nav-icon">
+                                <i className="bi bi-people"></i>
+                            </span>
+
+                            <span className="nav-text">
+                                Members
+                            </span>
+
+                            <span className="ms-auto">
+                                <i
+                                    className={`bi ${membersOpen
+                                        ? "bi-chevron-down"
+                                        : "bi-chevron-right"
+                                        }`}
+                                ></i>
+                            </span>
+                        </button>
+
+                        {membersOpen && (
+
+                            <div className="submenu">
+
+                                <NavLink
+                                    className="nav-link sub-link ps-3"
+                                    to="/members"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-people-fill"></i>
+                                    Members
+                                </NavLink>
+
+                                <NavLink
+                                    className="nav-link sub-link ps-3"
+                                    to="/add-member"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-person-plus-fill"></i>
+                                    Register Member
+                                </NavLink>
+
+                                <NavLink
+                                    className="nav-link sub-link ps-3"
+                                    to="/membership-payments"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-credit-card-fill"></i>
+                                    Membership Payments
+                                </NavLink>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                    {/* circulation */}
+                    <div>
+
+                        <button
+                            type="button"
+                            className="nav-link nav-dropdown"
+                            onClick={() => setCirculationOpen(!circulationOpen)}
+                        >
+
+                            <span className="nav-icon">
+                                <i className="bi bi-arrow-left-right"></i>
+                            </span>
+
+                            <span className="nav-text">
+                                Circulation
+                            </span>
+
+                            <span className="ms-auto">
+                                <i
+                                    className={`bi ${circulationOpen
+                                        ? "bi-chevron-down"
+                                        : "bi-chevron-right"
+                                        }`}
+                                ></i>
+                            </span>
+
+                        </button>
+
+                        {circulationOpen && (
+
+                            <div className="submenu">
+
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/issues"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-journal-plus"></i>
+                                    Issue Book
+                                </NavLink>
+
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/issued-books"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-journals"></i>
+                                    Issued Books
+                                </NavLink>
+
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/returned-books"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-journal-check"></i>
+                                    Returned Books
+                                </NavLink>
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/fine-payments"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-cash-coin"></i>
+                                    Fine Payments
+                                </NavLink>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+
+                    <NavLink className="nav-link" to="/settings">
                         <span className="nav-icon"><i className="bi bi-gear" aria-hidden="true"></i></span>
                         <span className="nav-text">Settings</span>
                     </NavLink>
