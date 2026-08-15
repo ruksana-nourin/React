@@ -6,9 +6,15 @@ class User
     public $email;
     public $role_id;
     private $password;
-    // public function __construct($id,$name, $email, $password){
+    public function __construct($id, $name, $email, $role_id, $password = "")
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->role_id = $role_id;
+        $this->password = password_hash ($password, PASSWORD_DEFAULT);
 
-    // }
+    }
 
     public static function getAll()
     {
@@ -21,7 +27,7 @@ class User
         order by u.id desc";
         $result = $db->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
-        
+
     }
     public static function getById($id)
     {
@@ -32,7 +38,20 @@ class User
         WHERE u.role_id = r.id and u.id =$id";
         $result = $db->query($query);
         return $result->fetch_assoc();
-        
+
+    }
+    public function create()
+    {
+        global $db;
+        $query = "insert into users(name, email, role_id, password)
+        values('$this->name', '$this->email', $this->role_id, '$this->password')
+        ";
+        $result = $db->query($query);
+        if($result){
+            return $db->insert_id;
+        }else{
+            return "Error:" .$db->error;
+        }
     }
 }
 ?>

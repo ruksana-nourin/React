@@ -1,7 +1,13 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Method:GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers:POST, OPTIONS");
+header("Access-Control-Allow-Headers:Content-Type");
+
+//Handle browser preflight request
+if($_SERVER['REQUEST_METHOD']== 'OPTIONS'){
+    http_response_code(204);
+    exit;
+}
 
 
 require_once "../config/db.php";
@@ -15,7 +21,16 @@ if($_GET['endpoint']){
     if($endpoint == 'users'  && $method == 'GET'){
         getUsers();
     }elseif($endpoint == 'user-create'  && $method == 'POST'){
-        echo "<h1>Create User $method</h1>";
+        $data= json_decode(file_get_contents("php://input"), true);
+        // print_r($data);
+        // $data=[
+        //     "id" => null,
+        //     "name" => "Rina",
+        //     "email" => "rina@example.com",
+        //     "role_id" => 2,
+        //     "password" => "123"
+        // ];
+        addNew($data);
     }elseif($endpoint == 'user-update' && $method == 'PUT'){
         echo "<h1>Update User $method</h1>";
     }elseif($endpoint == 'user-delete' && $method == 'DELETE'){
@@ -27,7 +42,7 @@ if($_GET['endpoint']){
         http_response_code(404);
     }
 }else{
-    http_response_code(100);
+    http_response_code(404);
     echo "<h1>No endpoint specified.</h1>";
 }
 

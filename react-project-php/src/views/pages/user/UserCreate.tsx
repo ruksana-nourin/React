@@ -3,6 +3,7 @@ import { useState } from "react";
 import PageHeading from "../../../components/PageHeading.tsx";
 import { defaultUser } from "../../../interfaces/User.ts";
 import type { User } from "../../../interfaces/User.ts";
+import axios from "axios";
 
 function UserCreate() {
   const [user, setUser] = useState<User>(defaultUser);
@@ -38,6 +39,24 @@ function UserCreate() {
       newErrors.role_id = "";
     }
     setErrors(newErrors);
+
+    if(newErrors.name == "" && newErrors.email == "" && newErrors.role_id == "" ){
+      // alert("Submit");
+      // console.log(user);
+      axios.post("http://localhost/react-project-api/api/user-create", user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res)=>{
+        console.log(res);
+      })
+      .catch((err)=>{
+        console.log(err);
+      });
+    }
   }
 
   return (
