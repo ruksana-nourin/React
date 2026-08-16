@@ -11,8 +11,18 @@ if($_SERVER['REQUEST_METHOD']== 'OPTIONS'){
 
 
 require_once "../config/db.php";
-require_once "../model/user.class.php";
-require_once "user-api.php";
+
+// require_once "../model/user.class.php";
+foreach(glob("../model/*.class.php") as $modalfile){
+require_once $modalfile;
+
+}
+// require_once "user-api.php";
+// require_once "role-api.php";
+foreach(glob("*-api.php") as $apifile){
+require_once $apifile;
+
+}
 
 if($_GET['endpoint']){
     $endpoint = $_GET['endpoint'];
@@ -38,6 +48,8 @@ if($_GET['endpoint']){
     }elseif($endpoint == 'user-details' && $method == 'GET'){
        $id=$_GET['id'];
        getUserById($id);
+    }elseif($endpoint == 'roles' && $method == 'GET'){
+       getRoles();
     }else{
         http_response_code(404);
     }

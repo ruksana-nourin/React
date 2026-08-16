@@ -80,7 +80,7 @@ function Navbar() {
                   alt="Asia R."
                 />
                 <span className="profile-name d-none d-sm-inline">
-                  Asia R.
+                   R. Nourin
                 </span>
               </button>
               <ul className="dropdown-menu dropdown-menu-end">

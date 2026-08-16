@@ -1,15 +1,15 @@
 import { Link, useParams } from "react-router";
 import PageHeading from "../../../components/PageHeading.tsx";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { defaultUser, type User } from "../../../interfaces/User.ts";
+import { api } from "../../../config.tsx";
 
 function UserDetails() {
     const {id} = useParams();
     const [user, setUser] = useState<User>(defaultUser);
     const getUser =()=>{
-      axios
-      .get("http://localhost/react-project-api/api/user-details?id="+id)
+      api
+      .get("user-details?id="+id)
       .then((res)=>{
         // console.log(res.data);
         setUser(res.data)
