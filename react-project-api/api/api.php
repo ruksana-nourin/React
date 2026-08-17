@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Method:GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers:Content-Type");
 
 //Handle browser preflight request
@@ -42,9 +42,14 @@ if($_GET['endpoint']){
         // ];
         addNew($data);
     }elseif($endpoint == 'user-update' && $method == 'PUT'){
-        echo "<h1>Update User $method</h1>";
+        // echo "<h1>Update User $method</h1>";
+        $data = json_decode(file_get_contents("php://input"),true);
+        updateUser($data);
     }elseif($endpoint == 'user-delete' && $method == 'DELETE'){
-        echo "<h1>Delete User $method</h1>";
+        // echo "<h1>Delete User $method</h1>";
+        $id=$_GET['id'];
+       
+        deleteUSer($id);
     }elseif($endpoint == 'user-details' && $method == 'GET'){
        $id=$_GET['id'];
        getUserById($id);

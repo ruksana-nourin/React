@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router";
 import PageHeading from "../../../components/PageHeading.tsx";
 import { useEffect, useState } from "react";
 import { defaultUser, type User } from "../../../interfaces/User.ts";
-import { api } from "../../../config.tsx";
+import { api } from "../../../config.ts";
 
 function UserDetails() {
     const {id} = useParams();

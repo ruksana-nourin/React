@@ -1,14 +1,17 @@
 import { Link } from "react-router";
-import axios from "axios";
 import PageHeading from "../../../components/PageHeading.tsx";
 import { useEffect, useState } from "react";
 import type { User } from "../../../interfaces/User.ts";
+import { api } from "../../../config.ts";
 
 function UserManage() {
 
   const [users, setUsers] = useState<User[]>([]);
+  const [deleteItem, setDeleteItem] = useState({ id: 0, name: "" });
+  // const [msg, setMsg] = useState(false);
+  // const [success, setSuccess] = useState(false);
   const getUsers = () => {
-    axios.get("http://localhost/react-project-api/api/users")
+    api.get("users")
       .then(res => {
         console.log(res.data);
         setUsers(res.data)
@@ -23,6 +26,17 @@ function UserManage() {
   }, []
   );
 
+  function handleDelete(id: number) {
+    api.delete("user-delete?id=" + id)
+      .then(res => {
+        if(res.status==200){
+          getUsers();
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   return (
     <>
@@ -79,7 +93,16 @@ function UserManage() {
                             className="btn btn-sm btn-outline-primary">
                             <i className="bi bi-pencil-square"></i>
                           </Link>
-                          <button className="btn btn-sm btn-outline-danger"><i className="bi bi-trash"></i></button>
+                          <button className="btn btn-sm btn-outline-danger"
+                            onClick={() =>
+                              setDeleteItem({
+                                id: Number(item.id),
+                                name: item.name
+                              })
+                            }
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteModal"
+                          ><i className="bi bi-trash"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -95,6 +118,65 @@ function UserManage() {
           </section>
         </div>
       </main>
+
+
+      {/* Modal */}
+      <div
+        className="modal fade"
+        id="deleteModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Delete User
+              </h5>
+
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-body text-center">
+              <div className="badge border border-danger fs-5 bg-danger"> User: {deleteItem.name}</div>
+              <h3 className="text-center">Are you sure?</h3>
+              <p className="mb-2 text-center">
+                Do you want to delete this user?
+              </p>
+            </div>
+
+            <div className="modal-footer">
+
+              <button
+                type="button"
+                className="btn btn-light"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => handleDelete(deleteItem.id)}
+                data-bs-dismiss="modal"
+              >
+                <i className="bi bi-trash me-1"></i>
+                Delete User
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </>
   );
 }

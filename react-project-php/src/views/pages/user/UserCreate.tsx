@@ -4,7 +4,7 @@ import PageHeading from "../../../components/PageHeading.tsx";
 import { defaultUser } from "../../../interfaces/User.ts";
 import type { User } from "../../../interfaces/User.ts";
 import type { Role } from "../../../interfaces/Role.ts";
-import { api } from "../../../config.tsx";
+import { api } from "../../../config.ts";
 
 
 function UserCreate() {
