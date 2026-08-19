@@ -13,15 +13,6 @@ function ProductCreate() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [category, setCategory] = useState<Category[]>([]);
 
-  const [msg, setMsg] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const [errors, setErrors] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role_id: "",
-  });
 
 
   function getBrands() {
@@ -57,7 +48,7 @@ function ProductCreate() {
     let data = new FormData();
     data.append("name", product.name);
     data.append("category_id", product.category_id.toString());
-    data.append("category_id", product.brand_id.toString());
+    data.append("brand_id", product.brand_id.toString());
     data.append("desc", product.short_description.toString());
     data.append("price", product.price.toString());
     data.append("quantity", product.quantity.toString());
@@ -66,8 +57,21 @@ function ProductCreate() {
     if (product.image) data.append("image", product.image);
 
 
+    // console.log(Object.fromEntries(data.entries()));
 
-    console.log(data);
+    api.post("product-create", data,{
+      headers:{
+        "Content-Type": "multipart/form-data",
+    },
+    })
+      .then((res) => {
+        console.log(res.data);
+
+      })
+      .catch((err) => {
+        console.log(err);
+
+      })
 
   }
 
@@ -80,7 +84,7 @@ function ProductCreate() {
             subtitle="Management"
             title="Add Product"
           >
-            <Link className="btn btn-outline-secondary btn-sm" to="/user">
+            <Link className="btn btn-outline-secondary btn-sm" to="/product">
               <i className="bi bi-arrow-left" aria-hidden="true"></i> Back to
               List
             </Link>
@@ -90,21 +94,7 @@ function ProductCreate() {
             <div className="col-12">
 
 
-              {msg && (
-
-                <div className={`alert alert-${success ? "success" : "danger"} alert-dismissible fade show mb-3`} role="alert">
-                  {success ? "Data saved successfully!" : "Somthing went wrong! try later"}
-
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"
-                    onClick={() => setMsg(false)}
-                  ></button>
-                </div>
-              )}
-
+              
 
 
               <form className="panel needs-validation">
@@ -275,9 +265,11 @@ function ProductCreate() {
                     </div>
                   </div>
                 </div>
-                <div className="d-flex flex-wrap justify-content-end gap-2 mt-4">
-                  <button className="btn btn-outline-secondary" type="reset">
-                    Cancel
+                <div className="d-flex flex-wrap justify-content-between gap-2 mt-4">
+                  <button className="btn btn-outline-secondary" type="reset"
+                  onClick={()=>setProduct(defaultProduct)}
+                  >
+                    Reset
                   </button>
                   <button
                     className="btn btn-primary"

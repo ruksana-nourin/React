@@ -60,7 +60,11 @@ if ($_GET['endpoint']) {
         getCategories();
     } elseif ($endpoint == 'brands' && $method == 'GET') {
         getBrands();
+    } elseif ($endpoint == 'products' && $method == 'GET') {
+        getProducts();
     } elseif ($endpoint == 'product-create' && $method == 'POST') {
+        // echo json_encode($_POST);
+        // exit;
         //    echo "Product create API";
         // print_r($_POST);
         // print_r($_FILES);

@@ -1,5 +1,5 @@
 <?php
-function imgUpload($file, $path = "uploads", $name = "", $maxKb = 500)
+function imgUpload($file, $path = "uploads", $name = "", $maxKb = 1500)
 {
     // return "file working";
     $allowed = [
@@ -51,6 +51,8 @@ function imgUpload($file, $path = "uploads", $name = "", $maxKb = 500)
     if (!move_uploaded_file($file['tmp_name'], $fullPath)) {
         return ['error' => 'Failed to move uploaded file'];
     }
+    $fullPath = trim($fullPath, './');
+    // $fullPath = str_replace( '../','',$fullPath);
 
     return ['success' => $fullPath];
 }

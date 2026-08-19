@@ -11,6 +11,7 @@ export interface Product{
     point_of_restock: number;
     active: boolean;
     image?: File | null;
+    image_path?: string
 }
 export const defaultProduct: Product={
     name: "",

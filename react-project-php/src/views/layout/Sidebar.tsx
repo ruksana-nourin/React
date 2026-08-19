@@ -46,11 +46,11 @@ function Sidebar() {
             <span className="nav-text">Sales Return</span>
           </NavLink>
           <small className="text-muted d-flex align-items-center">Product <hr className="w-100 ms-2 my-0"/></small>
-          <NavLink className="nav-link" to="/product-create">
+          <NavLink className="nav-link" to="/product">
             <span className="nav-icon">
               <i className="bi bi-box-seam"></i>
             </span>
-            <span className="nav-text">Add Products</span>
+            <span className="nav-text">Products</span>
           </NavLink> 
           <NavLink className="nav-link" to="/category">
             <span className="nav-icon">
