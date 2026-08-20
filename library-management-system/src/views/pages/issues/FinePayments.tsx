@@ -4,7 +4,10 @@ import PageHeading from "../../../components/PageHeading";
 import type { Issue } from "../../../interfaces/Issue";
 
 function FinePayments() {
-    
+    const [showFinePayModal, setShowFinePayModal] = useState(false);
+    const [selectedFine, setSelectedFine] =
+        useState<{ id: number } | null>(null);
+
 
     const [fines, setFines] = useState<Issue[]>([
         {
@@ -74,12 +77,10 @@ function FinePayments() {
         }
     ]);
 
-    const [searchTerm, setSearchTerm] = useState("");
+    const handleFinePayment = (id: number) => {
 
-    const handlePayFine = (id: number) => {
-
-        setFines((currentFines) =>
-            currentFines.map((fine) =>
+        setFines((prevFines) =>
+            prevFines.map((fine) =>
                 fine.id === id
                     ? {
                         ...fine,
@@ -89,7 +90,19 @@ function FinePayments() {
             )
         );
     };
+    const confirmFinePayment = () => {
 
+        if (!selectedFine) return;
+
+        handleFinePayment(selectedFine.id);
+
+        setShowFinePayModal(false);
+        setSelectedFine(null);
+    };
+
+    const [searchTerm, setSearchTerm] = useState("");
+
+    
     const filteredFines = fines.filter((fine) =>
         fine.memberName
             .toLowerCase()
@@ -258,12 +271,11 @@ function FinePayments() {
 
                                                             <button
                                                                 type="button"
-                                                                className="btn btn-sm btn-success"
-                                                                onClick={() =>
-                                                                    handlePayFine(
-                                                                        fine.id
-                                                                    )
-                                                                }
+                                                                className="btn btn-success"
+                                                                onClick={() => {
+                                                                    setSelectedFine(fine);
+                                                                    setShowFinePayModal(true);
+                                                                }}
                                                             >
                                                                 <i className="bi bi-check-circle me-1"></i>
                                                                 Pay Fine
@@ -310,6 +322,83 @@ function FinePayments() {
 
                 </div>
             </main>
+            {showFinePayModal && (
+                <>
+                    <div
+                        className="modal fade show d-block"
+                        tabIndex={-1}
+                        role="dialog"
+                        aria-modal="true"
+                    >
+                        <div className="modal-dialog modal-dialog-centered">
+
+                            <div className="modal-content">
+
+                                <div className="modal-header">
+
+                                    <h5 className="modal-title">
+                                        Confirm Fine Payment
+                                    </h5>
+
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        aria-label="Close"
+                                        onClick={() => {
+                                            setShowFinePayModal(false);
+                                            setSelectedFine(null);
+                                        }}
+                                    ></button>
+
+                                </div>
+
+                                <div className="modal-body text-center">
+
+                                    <i className="bi bi-question-circle text-warning fs-1"></i>
+
+                                    <h5 className="mt-3">
+                                        Confirm Fine Payment?
+                                    </h5>
+
+                                    <p className="text-muted mb-0">
+                                        Are you sure you want to mark this
+                                        fine payment as paid?
+                                    </p>
+
+                                </div>
+
+                                <div className="modal-footer">
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={() => {
+                                            setShowFinePayModal(false);
+                                            setSelectedFine(null);
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={confirmFinePayment}
+                                    >
+                                        <i className="bi bi-check-lg me-1"></i>
+                                        Confirm Payment
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div className="modal-backdrop fade show"></div>
+                </>
+            )}
         </>
     );
 }

@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
 import Dashboard from "./views/pages/Dashboard";
-import UserManage from "./views/pages/users/UserManage";
-import Usercreate from "./views/pages/users/UserCreate";
+import UserList from "./views/pages/users/UserList";
+import AddUser from "./views/pages/users/AddUser";
 import Error from "./views/pages/404";
 import Login from "./views/pages/Login";
-import View from "./views/pages/users/View";
-import Edit from "./views/pages/users/Edit";
+import ViewUser from "./views/pages/users/ViewUser";
+import EditUser from "./views/pages/users/EditUser";
 import BookList from "./views/pages/books/BookList";
 import AuthorList from "./views/pages/authors/AuthorList";
 import CategoryList from "./views/pages/categories/CategoryList";
@@ -47,19 +47,19 @@ const routes = createBrowserRouter([
             },
             {
                 path: "/user",
-                element: <UserManage />
+                element: <UserList />
             },
             {
                 path: "/add-user",
-                element: <Usercreate />
+                element: <AddUser />
             },
             {
-                path: "/view-user",
-                element: <View />
+                path: "user/:id",
+                element: <ViewUser/>
             },
             {
-                path: "/edit-user",
-                element: <Edit />
+                path: "user/:id/edit",
+                element: <EditUser />
             },
 
 
