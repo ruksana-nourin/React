@@ -1,14 +1,15 @@
-import { Link } from "react-router";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
 import PageHeading from "../../../components/PageHeading";
 import type { Issue } from "../../../interfaces/Issue";
-
+import { api } from "../../../config";
 function IssueBook() {
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState<
         Omit<Issue, "id">
     >({
-        issueCode: "ISS-0001",
+        issueCode: "",
 
         memberId: 0,
         memberCode: "",
@@ -30,6 +31,12 @@ function IssueBook() {
 
         fineStatus: "No Fine"
     });
+    const [errors, setErrors] = useState<any>({});
+    const [msg, setMsg] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [books, setBooks] = useState<any[]>([]);
+    const [members, setMembers] = useState<any[]>([]);
+    const [issueCode, setIssueCode] = useState("");
 
     const handleChange = (
         e: React.ChangeEvent<
@@ -56,8 +63,119 @@ function IssueBook() {
 
         e.preventDefault();
 
-        console.log("Book Issue:", formData);
+        let newErrors: any = {};
+
+
+        if (formData.memberId == 0) {
+            newErrors.memberId =
+                "Member is required. Please select one";
+        } else {
+            newErrors.memberId = "";
+        }
+
+        if (formData.bookId == 0) {
+            newErrors.bookId =
+                "Book is required. Please select one";
+        } else {
+            newErrors.bookId = "";
+        }
+
+        if (formData.issueDate == "") {
+            newErrors.issueDate = "Issue Date is required";
+        } else {
+            newErrors.issueDate = "";
+        }
+
+        if (formData.dueDate == "") {
+            newErrors.dueDate = "Due Date is required";
+        } else {
+            newErrors.dueDate = "";
+        }
+
+        setErrors(newErrors);
+
+        if (
+
+            newErrors.memberId == "" &&
+            newErrors.bookId == "" &&
+            newErrors.issueDate == "" &&
+            newErrors.dueDate == ""
+        ) {
+
+            const issueData = {
+                issueCode: issueCode,
+                memberId: formData.memberId,
+                bookId: formData.bookId,
+                issueDate: formData.issueDate,
+                dueDate: formData.dueDate
+            };
+
+            console.log(issueData);
+
+            api.post("issue-create", issueData)
+                .then((res) => {
+
+                    console.log("Create Response:", res);
+
+                    if (res.status == 200 || res.status == 201) {
+
+                        setMsg(true);
+                        setSuccess(true);
+
+                        setTimeout(() => {
+                            navigate("/issued-books");
+                        }, 1500);
+                    }
+                })
+                .catch((err) => {
+
+                    console.log("Create Error:", err);
+
+                    setMsg(true);
+                    setSuccess(false);
+                });
+        }
     };
+
+    useEffect(() => {
+
+        api.get("books")
+            .then((res) => {
+                console.log(res);
+                setBooks(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        api.get("members")
+            .then((res) => {
+                console.log("Members:", res.data);
+                setMembers(res.data);
+            })
+            .catch((err) => {
+                console.log("Members Error:", err);
+            });
+
+    }, []);
+
+    useEffect(() => {
+
+        api.get("issue-code")
+            .then((res) => {
+
+                console.log(res);
+
+                if (res.data.success) {
+                    setIssueCode(res.data.issueCode);
+                }
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+
+    }, []);
 
     return (
         <>
@@ -82,6 +200,17 @@ function IssueBook() {
                     <div className="card shadow-sm border-0 mt-4">
 
                         <div className="card-body">
+                            {msg && (
+                                <div
+                                    className={`alert ${success ? "alert-success" : "alert-danger"
+                                        }`}
+                                    role="alert"
+                                >
+                                    {success
+                                        ? "Issue Book successfully created."
+                                        : "Failed to issue book. Please try again."}
+                                </div>
+                            )}
 
                             <form onSubmit={handleSubmit}>
 
@@ -90,6 +219,7 @@ function IssueBook() {
                                     {/* Issue Code */}
                                     <div className="col-12 col-md-6">
 
+
                                         <label className="form-label">
                                             Issue Code
                                         </label>
@@ -97,11 +227,10 @@ function IssueBook() {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            name="issueCode"
-                                            value={formData.issueCode}
-                                            onChange={handleChange}
-                                            required
+                                            value={issueCode}
+                                            readOnly
                                         />
+
 
                                     </div>
 
@@ -142,17 +271,14 @@ function IssueBook() {
                                                 Select Member
                                             </option>
 
-                                            <option value={1}>
-                                                MEM-0001 - Ruksana Nourin
-                                            </option>
-
-                                            <option value={2}>
-                                                MEM-0002 - Nusrat Jahan
-                                            </option>
-
-                                            <option value={3}>
-                                                MEM-0003 - Sadia Rahman
-                                            </option>
+                                            {members.map((member) => (
+                                                <option
+                                                    key={member.id}
+                                                    value={member.id}
+                                                >
+                                                    {member.member_code} - {member.name}
+                                                </option>
+                                            ))}
 
                                         </select>
 
@@ -177,13 +303,16 @@ function IssueBook() {
                                                 Select Book
                                             </option>
 
-                                            <option value={1}>
-                                                Clean Code
-                                            </option>
-
-                                            <option value={2}>
-                                                Atomic Habits
-                                            </option>
+                                            {books
+                                                .filter((book) => book.status === "Available")
+                                                .map((book) => (
+                                                    <option
+                                                        key={book.id}
+                                                        value={book.id}
+                                                    >
+                                                        {book.title} - {book.isbn}
+                                                    </option>
+                                                ))}
 
                                         </select>
 

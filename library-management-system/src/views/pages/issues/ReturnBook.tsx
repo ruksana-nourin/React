@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router";
 import { useState } from "react";
 import PageHeading from "../../../components/PageHeading";
 import type { Issue } from "../../../interfaces/Issue";
+import { api } from "../../../config";
 
 function ReturnBook() {
 
@@ -111,15 +112,42 @@ function ReturnBook() {
     const handleSubmit = (
         e: React.FormEvent<HTMLFormElement>
     ) => {
-
         e.preventDefault();
 
-        console.log("Return Book:", {
-            issue,
-            returnDate,
-            fineAmount,
-            fineStatus
-        });
+        if (!returnDate) {
+            alert("Return date is required");
+            return;
+        }
+
+        const issueData = {
+            id: issue.id,
+            returnDate: returnDate,
+            fineAmount: fineAmount,
+            statusId: returnDate > issue.dueDate ? 3 : 2
+        };
+
+        console.log("Return Data:", issueData);
+
+        api.post("issue-return", issueData)
+            .then((res) => {
+
+                console.log("Return Response:", res);
+
+                if (res.status == 200 || res.status == 201) {
+
+                    alert("Book returned successfully");
+
+                    navigate("/issued-books");
+                }
+
+            })
+            .catch((err) => {
+
+                console.log("Return Error:", err);
+
+                alert("Failed to return book");
+
+            });
     };
 
     if (!issue) {
