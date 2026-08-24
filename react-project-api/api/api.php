@@ -11,7 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 
 require_once "../config/db.php";
-require_once "../helpers/img-upload-helper.php";
+
+// require_once "../helpers/img-upload-helper.php";
+foreach (glob("../helpers/*-helper.php") as $helperfile) {
+    require_once $helperfile;
+
+}
 
 // require_once "../model/user.class.php";
 foreach (glob("../model/*.class.php") as $modalfile) {
@@ -25,11 +30,19 @@ foreach (glob("*-api.php") as $apifile) {
 
 }
 
+if (!isset($_GET['endpoint']) || $_GET['endpoint'] == "") {
+    http_response_code(404);
+    echo "<h2>No endpoint found!</h2>";
+    exit;
+}
+
 if ($_GET['endpoint']) {
     $endpoint = $_GET['endpoint'];
     $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($endpoint == 'users' && $method == 'GET') {
+    if ($endpoint == 'login' && $method == 'POST') {
+        $data = json_decode(file_get_contents("php://input"), true);
+        checkLogin($data);
+    } elseif ($endpoint == 'users' && $method == 'GET') {
         getUsers();
     } elseif ($endpoint == 'user-create' && $method == 'POST') {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -69,12 +82,29 @@ if ($_GET['endpoint']) {
         // print_r($_POST);
         // print_r($_FILES);
         createProduct($_POST, $_FILES);
-    } else {
-        http_response_code(404);
+    } elseif ($endpoint == 'new-token') {
+        $data = [
+            "user_id" => 15,
+            "name" => "Mina",
+            "role_id" => 1,
+        ];
+        echo generateJWT($data);
+    } elseif ($endpoint == 'check-token') {
+        // echo 'Check Token';
+        $header = getallheaders();
+        $jwt = explode(" ", $header["Authorization"]);
+        // print_r($jwt[1]);
+        $valid = validateJWT($jwt[1]);
+        if ($valid) {
+            echo json_encode($valid);
+        } else {
+            http_response_code(401);
+            echo "Unauthorized. Please login Later.";
+        }
+
+
+        // print_r($valid);
     }
-} else {
-    http_response_code(404);
-    echo "<h1>No endpoint specified.</h1>";
 }
 
 ?>
