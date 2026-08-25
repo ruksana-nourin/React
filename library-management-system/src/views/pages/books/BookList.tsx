@@ -16,32 +16,7 @@ function BookList() {
     }, [searchTerm, categoryFilter, statusFilter]);
 
 
-    // const books: Book[] = [
-    //     {
-    //         id: 1,
-    //         title: "Clean Code",
-    //         isbn: "9780132350884",
-    //         author: "Robert C. Martin",
-    //         category: "Programming",
-    //         publisher: "Prentice Hall",
-    //         copies: 10,
-    //         availableCopies: 7,
-    //         status: "Available",
-    //         cover: "https://placehold.co/60x80"
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "Atomic Habits",
-    //         isbn: "9780735211292",
-    //         author: "James Clear",
-    //         category: "Self Development",
-    //         publisher: "Avery",
-    //         copies: 5,
-    //         availableCopies: 0,
-    //         status: "Issued",
-    //         cover: "https://placehold.co/60x80"
-    //     }
-    // ];
+    
     const [books, setBooks] = useState<Book[]>([]);
     const getBooks = () => {
     api.get("books")
@@ -81,7 +56,7 @@ useEffect(() => {
         setCategoryFilter("All");
         setStatusFilter("All");
     }
-    const booksPerPage = 5;
+    const booksPerPage = 10;
 
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 

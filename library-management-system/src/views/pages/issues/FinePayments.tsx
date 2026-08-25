@@ -1,81 +1,112 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import PageHeading from "../../../components/PageHeading";
 import type { Issue } from "../../../interfaces/Issue";
+import { api } from "../../../config";
 
 function FinePayments() {
     const [showFinePayModal, setShowFinePayModal] = useState(false);
-    const [selectedFine, setSelectedFine] =
-        useState<{ id: number } | null>(null);
+    const [selectedFine, setSelectedFine] = useState<Issue | null>(null);
 
 
-    const [fines, setFines] = useState<Issue[]>([
-        {
-            id: 2,
-            issueCode: "ISS-0002",
+    const [fines, setFines] = useState<Issue[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
-            memberId: 2,
-            memberCode: "MEM-0002",
-            memberName: "Nusrat Jahan",
+    const [successMessage, setSuccessMessage] = useState("");
+    const [paymentLoading, setPaymentLoading] = useState(false);
 
-            bookId: 2,
-            bookTitle: "Atomic Habits",
-            isbn: "9780735211292",
 
-            issueDate: "2026-08-01",
-            dueDate: "2026-08-07",
-            returnDate: "2026-08-10",
+    useEffect(
+        () => {
 
-            status: "Late",
+            api.get("issues")
+                .then((res) => {
 
-            fineAmount: 30,
-            fineStatus: "Unpaid"
-        },
+                    console.log("Fine API Response:", res.data);
 
-        {
-            id: 4,
-            issueCode: "ISS-0004",
+                    const data = res.data;
 
-            memberId: 4,
-            memberCode: "MEM-0004",
-            memberName: "Ayesha Rahman",
+                    const fineRecords = data.filter(
+                        (item: any) =>
+                            Number(item.fine_amount) > 0
+                    );
 
-            bookId: 4,
-            bookTitle: "JavaScript: The Good Parts",
-            isbn: "9780596517748",
+                    console.log(
+                        "FINE RECORDS:",
+                        fineRecords
+                    );
 
-            issueDate: "2026-08-02",
-            dueDate: "2026-08-08",
-            returnDate: "2026-08-12",
+                    const mappedFines: Issue[] =
+                        fineRecords.map((item: any) => ({
 
-            status: "Late",
+                            id: Number(item.id),
 
-            fineAmount: 40,
-            fineStatus: "Unpaid"
-        },
+                            issueCode: item.issue_code,
 
-        {
-            id: 5,
-            issueCode: "ISS-0005",
+                            memberId:
+                                Number(item.member_id),
 
-            memberId: 5,
-            memberCode: "MEM-0005",
-            memberName: "Sadia Rahman",
+                            memberCode:
+                                item.member_code,
 
-            bookId: 5,
-            bookTitle: "The Pragmatic Programmer",
-            isbn: "9780135957059",
+                            memberName:
+                                item.member_name,
 
-            issueDate: "2026-07-20",
-            dueDate: "2026-07-27",
-            returnDate: "2026-07-30",
+                            bookId:
+                                Number(item.book_id),
 
-            status: "Late",
+                            bookTitle:
+                                item.book_title,
 
-            fineAmount: 30,
-            fineStatus: "Paid"
-        }
-    ]);
+                            isbn:
+                                item.isbn,
+
+                            issueDate:
+                                item.issue_date,
+
+                            dueDate:
+                                item.due_date,
+
+                            returnDate:
+                                item.return_date || "",
+
+                            status:
+                                Number(item.status_id) === 3
+                                    ? "Late"
+                                    : Number(item.status_id) === 2
+                                        ? "Returned"
+                                        : "Issued",
+
+                            fineAmount:
+                                Number(item.fine_amount),
+
+                            fineStatus:
+                                item.payment_status_name === "Paid"
+                                    ? "Paid"
+                                    : item.payment_status_name === "Partial"
+                                        ? "Partial"
+                                        : "Unpaid"
+
+                        }));
+
+                    console.log(
+                        "MAPPED FINE RECORDS:",
+                        mappedFines
+                    );
+
+                    setFines(mappedFines);
+
+                })
+                .catch((err) => {
+
+                    console.log(
+                        "Fine API Error:",
+                        err
+                    );
+
+                });
+
+        }, []);
 
     const handleFinePayment = (id: number) => {
 
@@ -94,15 +125,46 @@ function FinePayments() {
 
         if (!selectedFine) return;
 
-        handleFinePayment(selectedFine.id);
+        api.post("fine-payment", {
+            issueId: selectedFine.id,
+            paidAmount: selectedFine.fineAmount,
+            paymentDate: new Date().toISOString().split("T")[0],
+            receivedBy: null,
+            notes: "Fine payment"
+        })
+            .then((res) => {
 
-        setShowFinePayModal(false);
-        setSelectedFine(null);
+                console.log("Payment Response:", res.data);
+
+                if (res.data.success) {
+
+                    handleFinePayment(selectedFine.id);
+
+                    setShowFinePayModal(false);
+                    setSelectedFine(null);
+
+                    alert("Fine payment successful");
+
+                } else {
+
+                    alert(
+                        res.data.message ||
+                        "Fine payment failed"
+                    );
+                }
+
+            })
+            .catch((err) => {
+
+                console.log("Payment Error:", err);
+
+                alert("Failed to process fine payment");
+
+            });
     };
 
-    const [searchTerm, setSearchTerm] = useState("");
 
-    
+
     const filteredFines = fines.filter((fine) =>
         fine.memberName
             .toLowerCase()
@@ -248,19 +310,18 @@ function FinePayments() {
                                                     </td>
 
                                                     <td>
-
                                                         {fine.fineStatus === "Paid" ? (
-
                                                             <span className="badge bg-success">
                                                                 Paid
                                                             </span>
-
+                                                        ) : fine.fineStatus === "Partial" ? (
+                                                            <span className="badge bg-warning text-dark">
+                                                                Partial
+                                                            </span>
                                                         ) : (
-
                                                             <span className="badge bg-danger">
                                                                 Unpaid
                                                             </span>
-
                                                         )}
 
                                                     </td>

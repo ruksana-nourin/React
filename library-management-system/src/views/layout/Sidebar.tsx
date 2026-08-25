@@ -32,6 +32,79 @@ function Sidebar() {
                         <span className="nav-text">Dashboard</span>
                     </NavLink>
 
+                    {/* circulation */}
+                    <div>
+
+                        <button
+                            type="button"
+                            className="nav-link nav-dropdown"
+                            onClick={() => setCirculationOpen(!circulationOpen)}
+                        >
+
+                            <span className="nav-icon">
+                                <i className="bi bi-arrow-left-right"></i>
+                            </span>
+
+                            <span className="nav-text">
+                                Circulation
+                            </span>
+
+                            <span className="ms-auto">
+                                <i
+                                    className={`bi ${circulationOpen
+                                        ? "bi-chevron-down"
+                                        : "bi-chevron-right"
+                                        }`}
+                                ></i>
+                            </span>
+
+                        </button>
+
+                        {circulationOpen && (
+
+                            <div className="submenu">
+
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/issues"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-journal-plus"></i>
+                                    Issue Book
+                                </NavLink>
+
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/issued-books"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-journals"></i>
+                                    Issued Books
+                                </NavLink>
+
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/returned-books"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-journal-check"></i>
+                                    Returned Books
+                                </NavLink>
+                                <NavLink
+                                    className="nav-link sub-link"
+                                    to="/fine-payments"
+                                    onClick={handleNavClick}
+                                >
+                                    <i className="bi bi-cash-coin"></i>
+                                    Fine Payments
+                                </NavLink>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
                     {/* library */}
                     <div className="nav-group">
 
@@ -150,78 +223,7 @@ function Sidebar() {
 
                     </div>
 
-                    {/* circulation */}
-                    <div>
 
-                        <button
-                            type="button"
-                            className="nav-link nav-dropdown"
-                            onClick={() => setCirculationOpen(!circulationOpen)}
-                        >
-
-                            <span className="nav-icon">
-                                <i className="bi bi-arrow-left-right"></i>
-                            </span>
-
-                            <span className="nav-text">
-                                Circulation
-                            </span>
-
-                            <span className="ms-auto">
-                                <i
-                                    className={`bi ${circulationOpen
-                                        ? "bi-chevron-down"
-                                        : "bi-chevron-right"
-                                        }`}
-                                ></i>
-                            </span>
-
-                        </button>
-
-                        {circulationOpen && (
-
-                            <div className="submenu">
-
-                                <NavLink
-                                    className="nav-link sub-link"
-                                    to="/issues"
-                                    onClick={handleNavClick}
-                                >
-                                    <i className="bi bi-journal-plus"></i>
-                                    Issue Book
-                                </NavLink>
-
-                                <NavLink
-                                    className="nav-link sub-link"
-                                    to="/issued-books"
-                                    onClick={handleNavClick}
-                                >
-                                    <i className="bi bi-journals"></i>
-                                    Issued Books
-                                </NavLink>
-
-                                <NavLink
-                                    className="nav-link sub-link"
-                                    to="/returned-books"
-                                    onClick={handleNavClick}
-                                >
-                                    <i className="bi bi-journal-check"></i>
-                                    Returned Books
-                                </NavLink>
-                                <NavLink
-                                    className="nav-link sub-link"
-                                    to="/fine-payments"
-                                    onClick={handleNavClick}
-                                >
-                                    <i className="bi bi-cash-coin"></i>
-                                    Fine Payments
-                                </NavLink>
-
-                            </div>
-
-                        )}
-
-                    </div>
 
 
                     <NavLink className="nav-link" to="/settings">
