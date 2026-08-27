@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { api } from "../../../config";
 function Login() {
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ email: "nourin@mail.com", password: "123" });
   const [msg, setMsg] = useState("");
   const navigate= useNavigate();
   // function handleSubmit(){}
@@ -11,11 +11,14 @@ function Login() {
     console.log(user);
     api.post("login", user)
       .then((res) => {
-        console.log(res.data.token);
-        localStorage.setItem("bearer_token", res.data.token);
-        setMsg("");
-        // window.location.href="/";
-        navigate("/");
+        console.log(res.data);
+        if(res.data.token){
+
+          localStorage.setItem("bearer_token", res.data.token);
+          setMsg("");
+          // window.location.href="/";
+          navigate("/");
+        }
       })
       .catch(err => {
         // console.log(err.response.data);

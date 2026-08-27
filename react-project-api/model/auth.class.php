@@ -12,7 +12,7 @@ class Auth
                 if (password_verify($_password, $user['password'])) {
                     http_response_code(200);
                     return [
-                        "token" => generateJWT($user),
+                        "token" => generateJWT($user,60),
                         "user"=> $user
                     ];
 

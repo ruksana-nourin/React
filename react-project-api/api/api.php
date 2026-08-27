@@ -42,46 +42,6 @@ if ($_GET['endpoint']) {
     if ($endpoint == 'login' && $method == 'POST') {
         $data = json_decode(file_get_contents("php://input"), true);
         checkLogin($data);
-    } elseif ($endpoint == 'users' && $method == 'GET') {
-        getUsers();
-    } elseif ($endpoint == 'user-create' && $method == 'POST') {
-        $data = json_decode(file_get_contents("php://input"), true);
-        // print_r($data);
-        // $data=[
-        //     "id" => null,
-        //     "name" => "Rina",
-        //     "email" => "rina@example.com",
-        //     "role_id" => 2,
-        //     "password" => "123"
-        // ];
-        addNew($data);
-    } elseif ($endpoint == 'user-update' && $method == 'PUT') {
-        // echo "<h1>Update User $method</h1>";
-        $data = json_decode(file_get_contents("php://input"), true);
-        updateUser($data);
-    } elseif ($endpoint == 'user-delete' && $method == 'DELETE') {
-        // echo "<h1>Delete User $method</h1>";
-        $id = $_GET['id'];
-
-        deleteUSer($id);
-    } elseif ($endpoint == 'user-details' && $method == 'GET') {
-        $id = $_GET['id'];
-        getUserById($id);
-    } elseif ($endpoint == 'roles' && $method == 'GET') {
-        getRoles();
-    } elseif ($endpoint == 'categories' && $method == 'GET') {
-        getCategories();
-    } elseif ($endpoint == 'brands' && $method == 'GET') {
-        getBrands();
-    } elseif ($endpoint == 'products' && $method == 'GET') {
-        getProducts();
-    } elseif ($endpoint == 'product-create' && $method == 'POST') {
-        // echo json_encode($_POST);
-        // exit;
-        //    echo "Product create API";
-        // print_r($_POST);
-        // print_r($_FILES);
-        createProduct($_POST, $_FILES);
     } elseif ($endpoint == 'new-token') {
         $data = [
             "user_id" => 15,
@@ -104,6 +64,67 @@ if ($_GET['endpoint']) {
 
 
         // print_r($valid);
+    } else {
+        //MiddleWare
+        
+        $header = getallheaders();
+        if(!isset($header["Authorization"])){
+            http_response_code(401);
+            echo "Unauthorized.please login again";
+            exit;
+
+        }
+        $jwt = explode(" ", $header["Authorization"]);
+        // print_r($jwt[1]);
+        $valid = validateJWT($jwt[1]);
+        if (!$valid) {
+            http_response_code(401);
+            echo "Unauthorized. Please login Later.";
+            exit;
+        }
+        //Endpoint
+
+        if ($endpoint == 'users' && $method == 'GET') {
+            getUsers();
+        } elseif ($endpoint == 'user-create' && $method == 'POST') {
+            $data = json_decode(file_get_contents("php://input"), true);
+            // print_r($data);
+            // $data=[
+            //     "id" => null,
+            //     "name" => "Rina",
+            //     "email" => "rina@example.com",
+            //     "role_id" => 2,
+            //     "password" => "123"
+            // ];
+            addNew($data);
+        } elseif ($endpoint == 'user-update' && $method == 'PUT') {
+            // echo "<h1>Update User $method</h1>";
+            $data = json_decode(file_get_contents("php://input"), true);
+            updateUser($data);
+        } elseif ($endpoint == 'user-delete' && $method == 'DELETE') {
+            // echo "<h1>Delete User $method</h1>";
+            $id = $_GET['id'];
+
+            deleteUSer($id);
+        } elseif ($endpoint == 'user-details' && $method == 'GET') {
+            $id = $_GET['id'];
+            getUserById($id);
+        } elseif ($endpoint == 'roles' && $method == 'GET') {
+            getRoles();
+        } elseif ($endpoint == 'categories' && $method == 'GET') {
+            getCategories();
+        } elseif ($endpoint == 'brands' && $method == 'GET') {
+            getBrands();
+        } elseif ($endpoint == 'products' && $method == 'GET') {
+            getProducts();
+        } elseif ($endpoint == 'product-create' && $method == 'POST') {
+            // echo json_encode($_POST);
+            // exit;
+            //    echo "Product create API";
+            // print_r($_POST);
+            // print_r($_FILES);
+            createProduct($_POST, $_FILES);
+        }
     }
 }
 
