@@ -4,7 +4,7 @@ export interface Contact {
     message: string;
 }
 export const defaultContact: Contact = {
-    name: 'Mina',
+    name: '',
     email: '',
     message: ''
 };

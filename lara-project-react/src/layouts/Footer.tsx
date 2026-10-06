@@ -1,7 +1,7 @@
 function Footer() {
     return (
         <>
-            <footer className="bg-dark text-light py-4">
+            <footer className="">
                 <div className="container text-center">
                     <p>&copy; 2026 My Website. All rights reserved.</p>
                 </div>

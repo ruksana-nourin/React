@@ -14,7 +14,10 @@ function App() {
     <>
       <Nav />
       <hr />
+      <div className="container  mx-auto ">
+
       <Outlet />
+      </div>
       <hr />
       <Footer />
 
