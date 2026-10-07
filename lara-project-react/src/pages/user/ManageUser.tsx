@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../../api";
 import type { User } from "../../interfaces/user";
+import { Link } from "react-router";
 
 function ManageUser() {
     const [users, setUsers] = useState<User[]>([]);
@@ -9,7 +10,7 @@ function ManageUser() {
         api.get("users")
             .then(function (res) {
                 // console.log(res.data.users);
-                setUsers(res.data.users);
+                setUsers(res.data.users.data);
             })
             .catch(function (err) {
                 console.log(err);
@@ -26,10 +27,10 @@ function ManageUser() {
                 <div className="flex justify-between items-center mb-4">
 
                     <h1 className="text-2xl font-bold mb-4">Manage User</h1>
-                    <button className="bg-[#F15412] border-[#F15412] border-3 hover:bg-[#F8F9D7] hover:text-[#F15412] text-[#F8F9D7] font-bold py-2 px-4 rounded 
+                    <Link to="/users/create" className="bg-[#F15412] border-[#F15412] border-3 hover:bg-[#F8F9D7] hover:text-[#F15412] text-[#F8F9D7] font-bold py-2 px-4 rounded 
                 duration-300">
                         Add User
-                    </button>
+                    </Link>
                 </div>
 
 
