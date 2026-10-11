@@ -5,7 +5,11 @@ import { api } from "../../api";
 
 function Login() {
 
-  const [user, setUser] = useState(defaultUser);
+  // const [user, setUser] = useState(defaultUser);
+  const [user, setUser] = useState(
+    {email: "tom@gmail.com", password: "123"}
+  );
+  
   const [err, setErr] = useState(errorUser);
   const Navigate = useNavigate();
   const [msg, setMsg] = useState('');
@@ -15,8 +19,11 @@ function Login() {
       .then(function (res) {
         console.log(res.data);
         if (res.data.success) {
-          setUser(defaultUser);
+          // setUser(defaultUser);
+          setUser({email: "tom@gmail.com", password: "123"});
           setErr(errorUser);
+          console.log(res.data.token);
+          localStorage.setItem("lara_token", res.data.token);
           Navigate('/users')
         }
       })
