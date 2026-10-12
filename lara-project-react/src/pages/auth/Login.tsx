@@ -17,7 +17,7 @@ function Login() {
     // console.log(user);
     api.post("login", user)
       .then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.success) {
           // setUser(defaultUser);
           setUser({email: "tom@gmail.com", password: "123"});
